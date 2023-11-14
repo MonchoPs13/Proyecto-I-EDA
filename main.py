@@ -1,6 +1,7 @@
 import subprocess, os
 from scripts.auth import register, login, User
 from scripts.browser import Browser
+from scripts.error import error
 
 class App:
   def __init__(self):
@@ -24,18 +25,19 @@ class App:
         return
     
     self.browser = Browser(self.user.username)
-    print(f"Logged in as: {self.user.username}")
+    # error(f"Logged in as: {self.user.username}")
     while True:
       os.system('clear' if os.name == 'posix' else 'cls')
       print("1. Browse projects")
-      print("2. Quit program")
+      print("2. Log out")
+      print("3. Quit program")
       num = int(input())
       if num == 1:
-        # subprocess.run(['python', './scripts/editor.py', 'noname.txt'])
-        # subprocess.run('ls', shell=True)
-        # projects = os.listdir(f'./users/{self.user.username}')
         self.browser.browseProjects()
       elif num == 2:
+        self.user = None
+        return self.printMenu()
+      elif num == 3:
         break
 
 App()
