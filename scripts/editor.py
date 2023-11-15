@@ -65,16 +65,7 @@ def edit(stdscr):
     while ch == -1:
       ch = screen.getch()
       
-    if ch != ((ch) & 0x1f) and ch < 128:
-      buffer[currRow].insert(currCol, ch)
-      currCol += 1
-    elif chr(ch) in '\n\r':
-      line = buffer[currRow][currCol:]
-      buffer[currRow] = buffer[currRow][:currCol]
-      currRow += 1
-      currCol = 0
-      buffer.insert(currRow, [] + line)
-    elif ch == 8:
+    if ch == 8 or ch == 127:
       # borrar
       if currCol:
         currCol -= 1
@@ -85,6 +76,9 @@ def edit(stdscr):
         currRow -= 1
         currCol = len(buffer[currRow])
         buffer[currRow] += line
+    elif ch != ((ch) & 0x1f) and ch < 128:
+      buffer[currRow].insert(currCol, ch)
+      currCol += 1
     elif ch == curses.KEY_LEFT:
       if currCol != 0:
         currCol -= 1
@@ -101,6 +95,12 @@ def edit(stdscr):
       currRow -= 1
     elif ch == curses.KEY_DOWN and currRow < len(buffer) - 1:
       currRow += 1
+    elif chr(ch) in '\n\r':
+      line = buffer[currRow][currCol:]
+      buffer[currRow] = buffer[currRow][:currCol]
+      currRow += 1
+      currCol = 0
+      buffer.insert(currRow, [] + line)
     
     row = buffer[currRow] if currRow < len(buffer) else None
     rowLen = len(row) if row is not None else 0

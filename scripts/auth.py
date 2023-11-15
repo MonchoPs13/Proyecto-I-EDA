@@ -27,6 +27,10 @@ def register():
     writer = csv.writer(db)
     writer.writerow([username, password])
     os.mkdir(f'./users/{username}')
+    os.mkdir(f'./users/{username}/friends')
+    os.mkdir(f'./users/{username}/shared_files')
+    open(f'./users/{username}/friends/f', "x")
+    open(f'./users/{username}/shared_files/shared', "x")
     return User(username, password)
   
 def login():

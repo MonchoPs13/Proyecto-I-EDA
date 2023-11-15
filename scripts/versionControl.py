@@ -1,4 +1,4 @@
-import os, shutil, distutils
+import os, shutil
 from scripts.graph import GraphVC
 from scripts.error import error
 
@@ -87,7 +87,8 @@ class VersionControl:
     src = f"{self.projectPath}/{self.currBranch}/{self.commits[self.currBranch][num - 1]}"
     dest = f"{self.projectPath}/{self.currBranch}/"
 
-    distutils.dir_util.copy_tree(src, dest) 
+    # distutils.dir_util.copy_tree(src, dest) 
+    shutil.copytree(src, dest, dirs_exist_ok=True)
 
   def mergeBranches(self, src, dest):
     srcPath = self.projectGraph.searchBranch(src)
@@ -102,7 +103,8 @@ class VersionControl:
 
     newSrc = f"{self.projectPath}/{srcPath}"
     newDest = f"{self.projectPath}/{destPath}"
-    distutils.dir_util.copy_tree(newSrc, newDest) 
+    # distutils.dir_util.copy_tree(newSrc, newDest) 
+    shutil.copytree(newSrc, newDest, dirs_exist_ok=True)
     shutil.rmtree(newSrc)
 
   def ignorePaths(self, file):
